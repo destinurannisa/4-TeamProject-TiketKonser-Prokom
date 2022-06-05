@@ -5,31 +5,31 @@ def login():
     with open('datapembeli.csv', 'r') as auth:
         reader = csv.reader(auth)
         next(reader)
-        for row in reader:
-            if ([namapembeli,nohp] == row) :
-                print("Anda sudah memiliki akun")
-                print("Data Pengguna Telah Tervalidasi")
+        for row in reader :
+            if ([namapembeli, nohp] == row):
+                print("Pengguna sudah memiliki akun")
+                print("Data pengguna telah tervalidasi")
                 return False
-        print("Data anda tidak ditemukan dalam database")
+        print("Data pengguna tidak ditemukan dalam database")
         input_valid = False
         while (input_valid == False):
-            Tidak_punya_akun = input("Apakah anda memang tidak memiliki akun?(Y/N)  ")
+            Tidak_punya_akun = input("Apakah anda memang tidak memiliki akun?(Y/N) ")
             if Tidak_punya_akun == "Y":
                 print("Data anda akan disimpan dalam database sebagai akun anda")
                 print("Mohon lakukan kembali validasi data")
-                with open('datapembeli.csv', 'a') as csvfile:
-                    databaru = csv.writer(csvfile, delimiter= ",") 
-                    databaru.writerow([namapembeli, nohp])
+                with open("datapembeli.csv", "a") as csvfile:
+                    newdata = csv.writer(csvfile, delimiter= ",")
+                    newdata.writerow([namapembeli, nohp])
                 input_valid = True
                 login()
-            elif Tidak_punya_akun == "N" :
+            elif Tidak_punya_akun == "N":
                 print("Input invalid")
                 input_valid = True
                 login()
-            else :
+            else: 
                 input_valid = False
 login()
-#bagian validasi data selesai
+#Bagian validasi data selesai
 
 pemesanan_ulang = True
 while (pemesanan_ulang == True):
