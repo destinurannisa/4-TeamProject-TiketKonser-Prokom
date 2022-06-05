@@ -1,5 +1,4 @@
 import csv
-
 def login():
     namapembeli = input("Nama Pembeli = ")
     nohp = input("No HP = ")
