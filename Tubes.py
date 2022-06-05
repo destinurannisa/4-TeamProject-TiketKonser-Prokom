@@ -26,7 +26,7 @@ def login():
                 print("Input invalid")
                 input_valid = True
                 login()
-            else:
+            else :
                 input_valid = False
 login()
 #bagian validasi data selesai
