@@ -1,4 +1,53 @@
 import csv
+from openpyxl import load_workbook
+import PySimpleGUI as sg
+from datetime import datetime
+from ctypes import resize
+import tkinter
+import tkinter.messagebox
+from tkinter import *
+import tkinter as tk
+from turtle import width
+from PIL import ImageTk, Image
+import pandas as pd
+
+sg.theme('TealMono')
+
+layout = [[sg.Text('Nama Lengkap'),sg.Push(), sg.Input(key='Nama_Lengkap')],
+          [sg.Text('Nomor HP'),sg.Push(), sg.Input(key='Nomor_HP')],
+          [sg.Button('Submit'), sg.Button('Close')]]
+
+window = sg.Window('Validasi Data Pembeli', layout, element_justification='center')
+
+while True:
+    event, values = window.read()
+    if event == sg.WIN_CLOSED or event == 'Close':
+        break
+    if event == 'Submit':
+        try:
+            wb = load_workbook('Tubes.xlsx')
+            sheet = wb['Sheet1']
+            NO = len(sheet['NO']) + 1
+            time_stamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
+            data = [NO, values['Nama_Lengkap'], values['Nomor_HP'], time_stamp]
+
+            sheet.append(data)
+
+            wb.save('Tubes.xlsx')
+
+            window['Nama_Lengkap'].update(value='')
+            window['Nomor_HP'].update(value='')
+            window['Nama_Lengkap'].set_focus()
+
+            sg.popup('Success', 'Data Saved')
+        except PermissionError:
+            sg.popup('File in use', 'File is being used by another User.\nPlease try again later.')
+        
+
+
+window.close()
+
 def login():
     namapembeli = input("Nama Pembeli = ")
     nohp = input("No HP = ")
@@ -33,8 +82,59 @@ login()
 
 def pemesanan():
     Pemesanan = input("Apakah anda ingin melakukan pemesanan? (Y/N) ")
-    if Pemesanan == "Y" or "y":
-        print("Menampilkan gambar seat kursi penonton")
+    if Pemesanan == "Y" or "y": 
+        window = Tk()
+        text = Text(window)
+        image = Image.open("stage.png")
+        
+        #resize_image = image.resize((50,50))
+        img = ImageTk.PhotoImage(image)
+        poster = Label(window,image = img)
+        poster.image = img
+        poster.grid(column=0,row=0,sticky = "NW")
+        wrapper = LabelFrame(window)
+        wrapper.grid(column=0,row=1)
+
+        Button(wrapper, 
+            bg="gold", 
+            fg="navy", 
+            text="VVIP", 
+            command=print("Terclick"),
+            width=10, 
+            height=7).grid(column=0,row=0,padx=10)
+        Button(wrapper, 
+            bg="silver", 
+            fg="navy", 
+            text="VIP", 
+            command=print("Terclick"),
+            width=10, 
+            height=7).grid(column=1,row=0,padx=10)
+        Button(wrapper, 
+            bg="green", 
+            fg="navy", 
+            text="A", 
+            command=print("Terclick"),
+            width=10, 
+            height=7).grid(column=2,row=0,padx=10)
+        Button(wrapper, 
+            bg="red", 
+            fg="navy", 
+            text="B", 
+            command=print("Terclick"),
+            width=10, 
+            height=7).grid(column=3,row=0,padx=10)
+        Button(wrapper, 
+            bg="light blue", 
+            fg="navy", 
+            text="C", 
+            command=print("Terclick"),
+            width=10, 
+            height=7).grid(column=4,row=0,padx=10)
+
+        window.geometry("730x600")
+        window.resizable(False,False)
+        window.mainloop()
+
         print("Menampilkan tabel harga dan sisa kursi")
     elif Pemesanan == "N" or "n":
         print("END")
