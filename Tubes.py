@@ -10,8 +10,9 @@ import tkinter as tk
 from turtle import width
 from PIL import ImageTk, Image
 import pandas as pd
+from tempfile import NamedTemporaryFile
 
-#Login pembeli
+# Login pembeli
 def login():
     namapembeli = input("Nama Pembeli = ")
     nohp = input("No HP = ")
@@ -41,31 +42,28 @@ def login():
                 login()
             else: 
                 input_valid = False
-
 login()
 
-#Bagian Pemesanan
+# Bagian Pemesanan
 def pemesanan():
     Pemesanan = input("Apakah anda ingin melakukan pemesanan? (Y/N) ")
     if Pemesanan == "Y" or "y": 
-
         #Menampilkan Gambar Stage
         window = Tk()
         text = Text(window)
         image = Image.open("stage.png")
-        
         img = ImageTk.PhotoImage(image)
         poster = Label(window,image = img)
         poster.image = img
         poster.grid(column=0,row=0,sticky = "NW")
         wrapper = LabelFrame(window)
         wrapper.grid(column=0,row=1)
-
         window.geometry("730x480")
         window.resizable(False,False)
         window.mainloop()
-
-        print("Menampilkan tabel harga dan sisa kursi")
+        # Menampilkan Tabel
+        updt = pd.read_csv("tabeltiket.csv")
+        print(updt)
     elif Pemesanan == "N" or "n":
         print("END")
         exit()
@@ -75,62 +73,49 @@ def pemesanan():
         return pemesanan()
 pemesanan()
 
-#Pemilihan Jenis Tiket
-def tiket():
-    Tiket = input("Jenis tiket yang anda pilih adalah : ")
-    if Tiket == "VVIP":
-        Jumlah_tiket = int(input("Berapa jumlah tiket yang akan dibeli? "))
-        Total_Bayar = 5000000 * Jumlah_tiket
-        print("Total Bayar adalah ", Total_Bayar)
-    elif Tiket == "VIP":
-        Jumlah_tiket = int(input("Berapa jumlah tiket yang akan dibeli? "))
-        Total_Bayar = 4000000 * Jumlah_tiket
-        print("Total Bayar adalah ", Total_Bayar)
-    elif Tiket == "A":
-        Jumlah_tiket = int(input("Berapa jumlah tiket yang akan dibeli? "))
-        Total_Bayar = 3000000 * Jumlah_tiket
-        print("Total Bayar adalah ", Total_Bayar)
-    elif Tiket == "B":
-        Jumlah_tiket = int(input("Berapa jumlah tiket yang akan dibeli? "))
-        Total_Bayar = 2500000 * Jumlah_tiket
-        print("Total Bayar adalah ", Total_Bayar)
-    elif Tiket == "VIP":
-        Jumlah_tiket = int(input("Berapa jumlah tiket yang akan dibeli? "))
-        Total_Bayar = 2000000 * Jumlah_tiket
-        print("Total Bayar adalah ", Total_Bayar)
-    else:
-        print("Input tidak valid")
-        print("Mohon melakukan input ulang")
-        return tiket()
-
-#Proses Pembayaran Tiket
 def tiket():
     global Total_Bayar
-    Tiket = input("Jenis tiket yang anda pilih adalah : ")
-    if Tiket == "VVIP":
-        Jumlah_tiket = int(input("Berapa jumlah tiket yang akan dibeli? "))
-        Total_Bayar = 5000000 * Jumlah_tiket
-        print("Total Bayar adalah ", Total_Bayar)
-    elif Tiket == "VIP":
-        Jumlah_tiket = int(input("Berapa jumlah tiket yang akan dibeli? "))
-        Total_Bayar = 4000000 * Jumlah_tiket
-        print("Total Bayar adalah ", Total_Bayar)
-    elif Tiket == "A":
-        Jumlah_tiket = int(input("Berapa jumlah tiket yang akan dibeli? "))
-        Total_Bayar = 3000000 * Jumlah_tiket
-        print("Total Bayar adalah ", Total_Bayar)
-    elif Tiket == "B":
-        Jumlah_tiket = int(input("Berapa jumlah tiket yang akan dibeli? "))
-        Total_Bayar = 2500000 * Jumlah_tiket
-        print("Total Bayar adalah ", Total_Bayar)
-    elif Tiket == "VIP":
-        Jumlah_tiket = int(input("Berapa jumlah tiket yang akan dibeli? "))
-        Total_Bayar = 2000000 * Jumlah_tiket
-        print("Total Bayar adalah ", Total_Bayar)
-    else:
-        print("Input tidak valid")
-        print("Mohon melakukan input ulang")
-        return tiket()
+    jenis = input("Jenis tiket yang anda pilih adalah : ")
+    jumlah = int(input("Jumlah = "))
+    with open('datapembelian.csv', 'r') as auth:
+        reader = csv.reader(auth)
+        next(reader)
+    with open('datapembelian.csv', 'a') as csvfile:
+        databaru = csv.writer(csvfile, delimiter= ",") 
+        databaru.writerow([jenis, jumlah])
+    tempfile = NamedTemporaryFile(mode='w', delete=False)
+    fields = ['jenis', 'harga', 'kuota']
+    with open('tabeltiket.csv', 'r') as csvfile, tempfile:
+        reader = csv.DictReader(csvfile, fieldnames=fields)
+        writer = csv.DictWriter(tempfile, fieldnames=fields)
+        for row in reader:
+            updt = pd.read_csv("tabeltiket.csv")
+            if jenis == "VVIP":
+                Total_Bayar = 5000000 * jumlah
+                kuota = updt.loc[0, 'kuota'] - int(jumlah)
+                updt.loc[0, 'kuota'] = kuota
+            elif jenis == "VIP":
+                Total_Bayar = 4000000 * jumlah
+                kuota = updt.loc[1, 'kuota'] - int(jumlah)
+                updt.loc[1, 'kuota'] = kuota
+            elif jenis == "A":
+                Total_Bayar = 3000000 * jumlah
+                kuota = updt.loc[2, 'kuota'] - int(jumlah)
+                updt.loc[2, 'kuota'] = kuota
+            elif jenis == "B":
+                Total_Bayar = 2500000 * jumlah
+                kuota = updt.loc[3, 'kuota'] - int(jumlah)
+                updt.loc[3, 'kuota'] = kuota
+            elif jenis == "C":
+                Total_Bayar = 2000000 * jumlah
+                kuota = updt.loc[4, 'kuota'] - int(jumlah)
+                updt.loc[4, 'kuota'] = kuota
+            else:
+                print("Input tidak valid")
+                print("Mohon melakukan input ulang")
+                return tiket()
+        updt.to_csv("tabeltiket.csv", index=False)
+        print("Total Bayar = ", Total_Bayar)
 tiket()
 
 #Pemilihan Metode Pembayaran
