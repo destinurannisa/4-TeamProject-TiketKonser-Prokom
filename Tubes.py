@@ -1,6 +1,4 @@
 import csv
-from openpyxl import load_workbook
-import PySimpleGUI as sg
 from datetime import datetime
 from ctypes import resize
 import tkinter
@@ -12,10 +10,17 @@ from PIL import ImageTk, Image
 import pandas as pd
 from tempfile import NamedTemporaryFile
 
+print("")
+print("--------------------------------------------------------------------------------")
+print("          Selamat Datang Di Pemesanan Tiket Konser Musik Ariana Grande          ")
+print("--------------------------------------------------------------------------------")
+print("")
 # Login pembeli
 def login():
-    namapembeli = input("Nama Pembeli = ")
-    nohp = input("No HP = ")
+    print("================================================================================")
+    namapembeli = input("Nama Lengkap = ")
+    nohp = input("Nomor HP     = ")
+    print("================================================================================")
     with open('datapembeli.csv', 'r') as auth:
         reader = csv.reader(auth)
         next(reader)
@@ -37,6 +42,7 @@ def login():
                 input_valid = True
                 login()
             elif Tidak_punya_akun == "N":
+                print("")
                 print("Input invalid")
                 input_valid = True
                 login()
@@ -46,6 +52,7 @@ login()
 
 # Bagian Pemesanan
 def pemesanan():
+    print("")
     Pemesanan = input("Apakah anda ingin melakukan pemesanan? (Y/N) ")
     if Pemesanan == "Y" or "y": 
         #Menampilkan Gambar Stage
@@ -61,13 +68,19 @@ def pemesanan():
         window.geometry("730x480")
         window.resizable(False,False)
         window.mainloop()
+
         # Menampilkan Tabel
+        print("")
+        print("----------------------------")
         updt = pd.read_csv("tabeltiket.csv")
         print(updt)
+        print("----------------------------")
+        print("")
     elif Pemesanan == "N" or "n":
         print("END")
         exit()
     else:
+        print("")
         print("Input tidak valid")
         print("Mohon melakukan input ulang")
         return pemesanan()
@@ -75,8 +88,9 @@ pemesanan()
 
 def tiket():
     global Total_Bayar
-    jenis = input("Jenis tiket yang anda pilih adalah : ")
+    jenis = input("Jenis tiket yang anda pilih adalah (VVIP, VIP, A, B, C) = ")
     jumlah = int(input("Jumlah = "))
+    print("------------------------------------------------------")
     with open('datapembelian.csv', 'r') as auth:
         reader = csv.reader(auth)
         next(reader)
@@ -115,37 +129,56 @@ def tiket():
                 print("Mohon melakukan input ulang")
                 return tiket()
         updt.to_csv("tabeltiket.csv", index=False)
-        print("Total Bayar = ", Total_Bayar)
+        print("")
+        print("------------------------------------------------------")
+        print("Total Bayar = Rp", Total_Bayar)
+        print("------------------------------------------------------")
 tiket()
 
 #Pemilihan Metode Pembayaran
 def pembayaran():
-    print("Anda dapat membayar dengan metode tunai/OVO/Gopay/Shopeepay/Credit Card/Debit")
+    print("")
+    print("Anda dapat membayar dengan metode (Tunai / OVO / Gopay / Shopeepay / Credit Card / Debit)")
     Metode_Pembayaran = input("Metode pembayaran apa yang akan anda gunakan? ")
-    if Metode_Pembayaran == "tunai":
-        Uang_Pembayaran = int(input("Nominal yang dikeluarkan? "))
+    if Metode_Pembayaran == "Tunai" or "tunai":
+        print("")
+        print("------------------------------------------------------")
+        Uang_Pembayaran = int(input("Nominal yang anda keluarkan adalah : Rp "))
         Kembalian = (Uang_Pembayaran - Total_Bayar)
-        print("Jumlah kembalian adalah ", Kembalian)
+        print("Jumlah kembalian adalah Rp", Kembalian)
+        print("------------------------------------------------------")
+        print("")
         print("Terimakasih telah melakukan pembayaran")
-    elif Metode_Pembayaran == "OVO":
-        Nominal_Bayar = int(input("Nominal yang anda keluarkan adalah :"))
+    elif Metode_Pembayaran == "OVO" or "ovo":
+        print("")
+        Nominal_Bayar = int(input("Nominal yang anda keluarkan adalah : Rp"))
         if Nominal_Bayar == tiket:
+            print("")
             print("Terima kasih telah melakukan pembayaran")
         else:
             return Nominal_Bayar()
-    elif Metode_Pembayaran == "Gopay":
-        Nominal_Bayar = int(input("Nominal yang anda keluarkan adalah :"))
+    elif Metode_Pembayaran == "Gopay" or "gopay":
+        print("")
+        Nominal_Bayar = int(input("Nominal yang anda keluarkan adalah : Rp"))
+        print("")
         print("Terima kasih telah melakukan pembayaran")
-    elif Metode_Pembayaran == "Shopeepay":
-        Nominal_Bayar = int(input("Nominal yang anda keluarkan adalah :"))
+    elif Metode_Pembayaran == "Shopeepay" or "shopeepay":
+        print("")
+        Nominal_Bayar = int(input("Nominal yang anda keluarkan adalah : Rp"))
+        print("")
         print("Terima kasih telah melakukan pembayaran")
-    elif Metode_Pembayaran == "Credit Card":
-        Nominal_Bayar = int(input("Nominal yang anda keluarkan adalah :"))
+    elif Metode_Pembayaran == "Credit Card" or "credit card":
+        print("")
+        Nominal_Bayar = int(input("Nominal yang anda keluarkan adalah : Rp"))
+        print("")
         print("Terima kasih telah melakukan pembayaran")
-    elif Metode_Pembayaran == "Debit/Credit":
-        Nominal_Bayar = int(input("Nominal yang anda keluarkan adalah :"))
+    elif Metode_Pembayaran == "Debit" or "debit":
+        print("")
+        Nominal_Bayar = int(input("Nominal yang anda keluarkan adalah : Rp"))
+        print("")
         print("Terima kasih telah melakukan pembayaran")
     else:
+        print("")
         print("Input tidak valid")
         print("Mohon melakukan input ulang")
         return pembayaran()
@@ -153,6 +186,7 @@ pembayaran()
 
 #Konfirmasi Untuk Transaksi Lain
 def transaksi_lain():
+    print("")
     Transaksi_Lagi = input("Apakah anda ingin melakukan transaksi lagi? ")
     if Transaksi_Lagi == "Y":
         return pemesanan()
