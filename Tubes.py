@@ -11,43 +11,7 @@ from turtle import width
 from PIL import ImageTk, Image
 import pandas as pd
 
-sg.theme('TealMono')
-
-layout = [[sg.Text('Nama Lengkap'),sg.Push(), sg.Input(key='Nama_Lengkap')],
-          [sg.Text('Nomor HP'),sg.Push(), sg.Input(key='Nomor_HP')],
-          [sg.Button('Submit'), sg.Button('Close')]]
-
-window = sg.Window('Validasi Data Pembeli', layout, element_justification='center')
-
-while True:
-    event, values = window.read()
-    if event == sg.WIN_CLOSED or event == 'Close':
-        break
-    if event == 'Submit':
-        try:
-            wb = load_workbook('Tubes.xlsx')
-            sheet = wb['Sheet1']
-            NO = len(sheet['NO']) + 1
-            time_stamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-
-            data = [NO, values['Nama_Lengkap'], values['Nomor_HP'], time_stamp]
-
-            sheet.append(data)
-
-            wb.save('Tubes.xlsx')
-
-            window['Nama_Lengkap'].update(value='')
-            window['Nomor_HP'].update(value='')
-            window['Nama_Lengkap'].set_focus()
-
-            sg.popup('Success', 'Data Saved')
-        except PermissionError:
-            sg.popup('File in use', 'File is being used by another User.\nPlease try again later.')
-        
-
-
-window.close()
-
+#Login pembeli
 def login():
     namapembeli = input("Nama Pembeli = ")
     nohp = input("No HP = ")
@@ -77,17 +41,19 @@ def login():
                 login()
             else: 
                 input_valid = False
-login()
-#Bagian validasi data selesai
 
+login()
+
+#Bagian Pemesanan
 def pemesanan():
     Pemesanan = input("Apakah anda ingin melakukan pemesanan? (Y/N) ")
     if Pemesanan == "Y" or "y": 
+
+        #Menampilkan Gambar Stage
         window = Tk()
         text = Text(window)
         image = Image.open("stage.png")
         
-        #resize_image = image.resize((50,50))
         img = ImageTk.PhotoImage(image)
         poster = Label(window,image = img)
         poster.image = img
@@ -95,43 +61,7 @@ def pemesanan():
         wrapper = LabelFrame(window)
         wrapper.grid(column=0,row=1)
 
-        Button(wrapper, 
-            bg="gold", 
-            fg="navy", 
-            text="VVIP", 
-            command=print("Terclick"),
-            width=10, 
-            height=7).grid(column=0,row=0,padx=10)
-        Button(wrapper, 
-            bg="silver", 
-            fg="navy", 
-            text="VIP", 
-            command=print("Terclick"),
-            width=10, 
-            height=7).grid(column=1,row=0,padx=10)
-        Button(wrapper, 
-            bg="green", 
-            fg="navy", 
-            text="A", 
-            command=print("Terclick"),
-            width=10, 
-            height=7).grid(column=2,row=0,padx=10)
-        Button(wrapper, 
-            bg="red", 
-            fg="navy", 
-            text="B", 
-            command=print("Terclick"),
-            width=10, 
-            height=7).grid(column=3,row=0,padx=10)
-        Button(wrapper, 
-            bg="light blue", 
-            fg="navy", 
-            text="C", 
-            command=print("Terclick"),
-            width=10, 
-            height=7).grid(column=4,row=0,padx=10)
-
-        window.geometry("730x600")
+        window.geometry("730x480")
         window.resizable(False,False)
         window.mainloop()
 
@@ -145,6 +75,7 @@ def pemesanan():
         return pemesanan()
 pemesanan()
 
+#Pemilihan Jenis Tiket
 def tiket():
     Tiket = input("Jenis tiket yang anda pilih adalah : ")
     if Tiket == "VVIP":
@@ -171,7 +102,10 @@ def tiket():
         print("Input tidak valid")
         print("Mohon melakukan input ulang")
         return tiket()
+
+#Proses Pembayaran Tiket
 def tiket():
+    global Total_Bayar
     Tiket = input("Jenis tiket yang anda pilih adalah : ")
     if Tiket == "VVIP":
         Jumlah_tiket = int(input("Berapa jumlah tiket yang akan dibeli? "))
@@ -198,12 +132,14 @@ def tiket():
         print("Mohon melakukan input ulang")
         return tiket()
 tiket()
+
+#Pemilihan Metode Pembayaran
 def pembayaran():
     print("Anda dapat membayar dengan metode tunai/OVO/Gopay/Shopeepay/Credit Card/Debit")
     Metode_Pembayaran = input("Metode pembayaran apa yang akan anda gunakan? ")
     if Metode_Pembayaran == "tunai":
         Uang_Pembayaran = int(input("Nominal yang dikeluarkan? "))
-        Kembalian = (Uang_Pembayaran - (Total_Bayar))
+        Kembalian = (Uang_Pembayaran - Total_Bayar)
         print("Jumlah kembalian adalah ", Kembalian)
         print("Terimakasih telah melakukan pembayaran")
     elif Metode_Pembayaran == "OVO":
@@ -229,6 +165,8 @@ def pembayaran():
         print("Mohon melakukan input ulang")
         return pembayaran()
 pembayaran()
+
+#Konfirmasi Untuk Transaksi Lain
 def transaksi_lain():
     Transaksi_Lagi = input("Apakah anda ingin melakukan transaksi lagi? ")
     if Transaksi_Lagi == "Y":
@@ -241,3 +179,74 @@ def transaksi_lain():
         print("Mohon melakukan input ulang")
         return transaksi_lain()
 transaksi_lain()
+
+#Menampilkan Struk Pembayaran
+screen = Tk()
+screen.title("Konfirmasi Pembayaran")
+screen.config(background="white")
+
+screen.geometry('1000x700')
+screen.resizable(False,False)
+
+kertas=PhotoImage(file='kotaktiket.png')
+Label(screen,image=kertas,background="white").place(x=320,y=40)
+
+poster=PhotoImage(file='poster.png')
+Label(screen,image=poster).place(x=540,y=140)
+
+jdl=Label(screen,text='Detail Tranksaksi Tiket', font=("Calibri", 18, "bold"), background="white")
+jdl.place(x=380,y=60)
+
+tpgrid=Label(screen,text='__________________________________________________________________', background="white")
+tpgrid.place(x=335,y=90)
+
+acr=Label(screen,text="ARIANA GRANDE MUSIC CONCERT", font=('Calibri', 12, 'bold'), background="white")
+acr.place(x=380,y=110)
+
+nm=Label(screen,text='NAMA PEMBELI', font=("Calibri", 11), background="white")
+nm.place(x=340,y=140)
+
+nmpmb=Label(screen,text='....', font=("Calibri", 11,"bold"), background="white")
+nmpmb.place(x=340,y=170)
+
+tgl=Label(screen,text='TANGGAL', font=("Calibri", 11), background="white")
+tgl.place(x=340,y=200)
+
+tglacr=Label(screen,text='SELASA, 21 AGUSTUS 2017', font=('Calibri', 11, 'bold'), background="white")
+tglacr.place(x=340,y=230)
+
+wkt=Label(screen,text="WAKTU", font=("Calibri", 11), background="white")
+wkt.place(x=340,y=260)
+
+jam=Label(screen,text='20:00', font=("Calibri", 11, 'bold'), background="white")
+jam.place(x=340,y=290)
+
+jns=Label(screen,text='JENIS SEAT', font=("Calibri", 11,), background="white")
+jns.place(x=340,y=320)
+
+jnsseat=Label(screen,text='VVIP', font=("Calibri", 11, "bold"), background="white")
+jnsseat.place(x=340,y=350)
+
+jmlh=Label(screen,text='JUMLAH', font=("Calibri", 11), background="white")
+jmlh.place(x=340,y=380)
+
+byk=Label(screen,text='3', font=("Calibri", 11, "bold"), background="white")
+byk.place(x=340,y=410)
+
+topgrid=Label(screen,text='__________________________________________________________________', background="white")
+topgrid.place(x=335,y=440)
+
+tb=Label(screen,text='Total Bayar', font=('Calibri', 14, 'bold'), background="white")
+tb.place(x=340,y=470)
+
+botgrid=Label(screen,text='__________________________________________________________________', background="white")
+botgrid.place(x=335,y=500)
+
+snk=Label(screen,text='* Pemesanan Tidak Dapat Dikembalikan Jika Sudah Melakukan Transaksi', font=('Calibri', 7), background="white", fg='red')
+snk.place(x=340,y=530)
+
+Cetak_button=PhotoImage(file="cetakbutton.png")
+cetak=Button(image=Cetak_button, borderwidth=0, cursor="hand2", bd=0, font=("Calibri"), background="white")
+cetak.place(x=430,y=600)
+
+screen.mainloop()
