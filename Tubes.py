@@ -12,16 +12,18 @@ from tempfile import NamedTemporaryFile
 
 print("")
 print("--------------------------------------------------------------------------------")
-print("          Selamat Datang Di Pemesanan Tiket Konser Musik Ariana Grande          ")
+print("          Selamat Datang di Pemesanan Tiket Konser Musik Ariana Grande          ")
 print("--------------------------------------------------------------------------------")
 print("")
+
 # Login pembeli
 def login():
+    global namapembeli, nohp
     print("================================================================================")
     namapembeli = input("Nama Lengkap = ")
     nohp = input("Nomor HP     = ")
     print("================================================================================")
-    with open('datapembeli.csv', 'r') as auth:
+    with open('data_akun.csv', 'r') as auth:
         reader = csv.reader(auth)
         next(reader)
         for row in reader :
@@ -36,7 +38,7 @@ def login():
             if Tidak_punya_akun == "Y":
                 print("Data anda akan disimpan dalam database sebagai akun anda")
                 print("Mohon lakukan kembali validasi data")
-                with open("datapembeli.csv", "a") as csvfile:
+                with open("data_akun.csv", "a") as csvfile:
                     newdata = csv.writer(csvfile, delimiter= ",")
                     newdata.writerow([namapembeli, nohp])
                 input_valid = True
@@ -87,18 +89,12 @@ def pemesanan():
 pemesanan()
 
 def tiket():
-    global Total_Bayar
+    global Total_Bayar, jenis, jumlah
     jenis = input("Jenis tiket yang anda pilih adalah (VVIP, VIP, A, B, C) = ")
     jumlah = int(input("Jumlah = "))
     print("------------------------------------------------------")
-    with open('datapembelian.csv', 'r') as auth:
-        reader = csv.reader(auth)
-        next(reader)
-    with open('datapembelian.csv', 'a') as csvfile:
-        databaru = csv.writer(csvfile, delimiter= ",") 
-        databaru.writerow([jenis, jumlah])
     tempfile = NamedTemporaryFile(mode='w', delete=False)
-    fields = ['jenis', 'harga', 'kuota']
+    fields = ['Jenis', 'Harga', 'Kuota']
     with open('tabeltiket.csv', 'r') as csvfile, tempfile:
         reader = csv.DictReader(csvfile, fieldnames=fields)
         writer = csv.DictWriter(tempfile, fieldnames=fields)
@@ -106,24 +102,24 @@ def tiket():
             updt = pd.read_csv("tabeltiket.csv")
             if jenis == "VVIP":
                 Total_Bayar = 5000000 * jumlah
-                kuota = updt.loc[0, 'kuota'] - int(jumlah)
-                updt.loc[0, 'kuota'] = kuota
+                kuota = updt.loc[0, 'Kuota'] - int(jumlah)
+                updt.loc[0, 'Kuota'] = kuota
             elif jenis == "VIP":
                 Total_Bayar = 4000000 * jumlah
-                kuota = updt.loc[1, 'kuota'] - int(jumlah)
-                updt.loc[1, 'kuota'] = kuota
+                kuota = updt.loc[1, 'Kuota'] - int(jumlah)
+                updt.loc[1, 'Kuota'] = kuota
             elif jenis == "A":
                 Total_Bayar = 3000000 * jumlah
-                kuota = updt.loc[2, 'kuota'] - int(jumlah)
-                updt.loc[2, 'kuota'] = kuota
+                kuota = updt.loc[2, 'Kuota'] - int(jumlah)
+                updt.loc[2, 'Kuota'] = kuota
             elif jenis == "B":
                 Total_Bayar = 2500000 * jumlah
-                kuota = updt.loc[3, 'kuota'] - int(jumlah)
-                updt.loc[3, 'kuota'] = kuota
+                kuota = updt.loc[3, 'Kuota'] - int(jumlah)
+                updt.loc[3, 'Kuota'] = kuota
             elif jenis == "C":
                 Total_Bayar = 2000000 * jumlah
-                kuota = updt.loc[4, 'kuota'] - int(jumlah)
-                updt.loc[4, 'kuota'] = kuota
+                kuota = updt.loc[4, 'Kuota'] - int(jumlah)
+                updt.loc[4, 'Kuota'] = kuota
             else:
                 print("Input tidak valid")
                 print("Mohon melakukan input ulang")
@@ -137,10 +133,11 @@ tiket()
 
 #Pemilihan Metode Pembayaran
 def pembayaran():
+    global Metode_Pembayaran,status
     print("")
     print("Anda dapat membayar dengan metode (Tunai / OVO / Gopay / Shopeepay / Credit Card / Debit)")
     Metode_Pembayaran = input("Metode pembayaran apa yang akan anda gunakan? ")
-    if Metode_Pembayaran == "Tunai" or "tunai":
+    if Metode_Pembayaran == "Tunai":
         print("")
         print("------------------------------------------------------")
         Uang_Pembayaran = int(input("Nominal yang anda keluarkan adalah : Rp "))
@@ -149,56 +146,65 @@ def pembayaran():
         print("------------------------------------------------------")
         print("")
         print("Terimakasih telah melakukan pembayaran")
-    elif Metode_Pembayaran == "OVO" or "ovo":
-        print("")
-        Nominal_Bayar = int(input("Nominal yang anda keluarkan adalah : Rp"))
-        if Nominal_Bayar == tiket:
-            print("")
-            print("Terima kasih telah melakukan pembayaran")
-        else:
-            return Nominal_Bayar()
-    elif Metode_Pembayaran == "Gopay" or "gopay":
-        print("")
-        Nominal_Bayar = int(input("Nominal yang anda keluarkan adalah : Rp"))
-        print("")
-        print("Terima kasih telah melakukan pembayaran")
-    elif Metode_Pembayaran == "Shopeepay" or "shopeepay":
-        print("")
-        Nominal_Bayar = int(input("Nominal yang anda keluarkan adalah : Rp"))
-        print("")
-        print("Terima kasih telah melakukan pembayaran")
-    elif Metode_Pembayaran == "Credit Card" or "credit card":
-        print("")
-        Nominal_Bayar = int(input("Nominal yang anda keluarkan adalah : Rp"))
-        print("")
-        print("Terima kasih telah melakukan pembayaran")
-    elif Metode_Pembayaran == "Debit" or "debit":
-        print("")
-        Nominal_Bayar = int(input("Nominal yang anda keluarkan adalah : Rp"))
-        print("")
-        print("Terima kasih telah melakukan pembayaran")
     else:
-        print("")
-        print("Input tidak valid")
-        print("Mohon melakukan input ulang")
-        return pembayaran()
+        input_valid = False
+        while (input_valid == False):
+            Nominal_Bayar = int(input("Nominal yang anda bayarkan adalah : Rp"))
+            if Metode_Pembayaran == "OVO":
+                if Nominal_Bayar == Total_Bayar:
+                    print("Terima kasih telah melakukan pembayaran")
+                    input_valid = True
+                else:
+                    print("Nominal yang anda input tidak sesuai dengan tagihan")
+                    print("Tagihan yang harus anda bayar = Rp", Total_Bayar)
+                    input_valid = False
+            elif Metode_Pembayaran == "Gopay":
+                if Nominal_Bayar == Total_Bayar:
+                    print("Terima kasih telah melakukan pembayaran")
+                    input_valid = True
+                else:
+                    print("Nominal yang anda input tidak sesuai dengan tagihan")
+                    print("Tagihan yang harus anda bayar = Rp", Total_Bayar)
+                    input_valid = False
+            elif Metode_Pembayaran == "Shopeepay":
+                if Nominal_Bayar == Total_Bayar:
+                    print("Terima kasih telah melakukan pembayaran")
+                    input_valid = True
+                else:
+                    print("Nominal yang anda input tidak sesuai dengan tagihan")
+                    print("Tagihan yang harus anda bayar = Rp", Total_Bayar)
+                    input_valid = False
+            elif Metode_Pembayaran == "Credit Card":
+                if Nominal_Bayar == Total_Bayar:
+                    print("Terima kasih telah melakukan pembayaran")
+                    input_valid = True
+                else:
+                    print("Nominal yang anda input tidak sesuai dengan tagihan")
+                    print("Tagihan yang harus anda bayar = Rp", Total_Bayar)
+                    input_valid = False
+            elif Metode_Pembayaran == "Debit":
+                if Nominal_Bayar == Total_Bayar:
+                    print("Terima kasih telah melakukan pembayaran")
+                    input_valid = True
+                else:
+                    print("Nominal yang anda input tidak sesuai dengan tagihan")
+                    print("Tagihan yang harus anda bayar = Rp", Total_Bayar)
+                    input_valid = False
+            else:
+                print("Input tidak valid")
+                print("Mohon melakukan input ulang")
+                return pembayaran()
+        status = "Berhasil"
 pembayaran()
 
-#Konfirmasi Untuk Transaksi Lain
-def transaksi_lain():
-    print("")
-    Transaksi_Lagi = input("Apakah anda ingin melakukan transaksi lagi? ")
-    if Transaksi_Lagi == "Y":
-        return pemesanan()
-    elif Transaksi_Lagi == "N":
-        print("Selesai")
-        exit()
-    else:        
-        print("Input tidak valid")
-        print("Mohon melakukan input ulang")
-        return transaksi_lain()
-transaksi_lain()
+# Menyimpan rekapan transaksi pada CSV
+def simpan():
+    with open('rekap_transaksi.csv', 'a') as csvfile:
+        rekap = csv.writer(csvfile, delimiter= ",") 
+        rekap.writerow([namapembeli, nohp, jenis, jumlah, Total_Bayar, Metode_Pembayaran,status])
+simpan()
 
+print("Berikut Struk Transaksi Anda")
 #Menampilkan Struk Pembayaran
 screen = Tk()
 screen.title("Konfirmasi Pembayaran")
@@ -269,3 +275,18 @@ cetak=Button(image=Cetak_button, borderwidth=0, cursor="hand2", bd=0, font=("Cal
 cetak.place(x=430,y=600)
 
 screen.mainloop()
+
+#Konfirmasi Untuk Transaksi Lain
+def transaksi_lain():
+    print("")
+    Transaksi_Lagi = input("Apakah anda ingin melakukan transaksi lagi? ")
+    if Transaksi_Lagi == "Y":
+        return pemesanan()
+    elif Transaksi_Lagi == "N":
+        print("Terima kasih telah melakukan transaksi")
+        exit()
+    else:        
+        print("Input tidak valid")
+        print("Mohon melakukan input ulang")
+        return transaksi_lain()
+transaksi_lain()
