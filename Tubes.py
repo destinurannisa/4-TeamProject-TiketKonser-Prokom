@@ -149,48 +149,70 @@ def pembayaran():
     else:
         input_valid = False
         while (input_valid == False):
-            Nominal_Bayar = int(input("Nominal yang anda bayarkan adalah : Rp"))
+            Nominal_Bayar = int(input("Nominal yang anda bayarkan adalah : Rp "))
             if Metode_Pembayaran == "OVO":
+                print("")
                 if Nominal_Bayar == Total_Bayar:
-                    print("Terima kasih telah melakukan pembayaran")
+                    print("")
+                    print("--------------------------------------------------------------------------------")
+                    print("                    Terima kasih telah melakukan pembayaran                     ")
+                    print("--------------------------------------------------------------------------------")
                     input_valid = True
                 else:
+                    print("")
                     print("Nominal yang anda input tidak sesuai dengan tagihan")
                     print("Tagihan yang harus anda bayar = Rp", Total_Bayar)
                     input_valid = False
             elif Metode_Pembayaran == "Gopay":
+                print("")
                 if Nominal_Bayar == Total_Bayar:
-                    print("Terima kasih telah melakukan pembayaran")
+                    print("--------------------------------------------------------------------------------")
+                    print("                    Terima kasih telah melakukan pembayaran                     ")
+                    print("--------------------------------------------------------------------------------")
                     input_valid = True
                 else:
+                    print("")
                     print("Nominal yang anda input tidak sesuai dengan tagihan")
-                    print("Tagihan yang harus anda bayar = Rp", Total_Bayar)
+                    print("Tagihan yang harus anda bayar = Rp ", Total_Bayar)
                     input_valid = False
             elif Metode_Pembayaran == "Shopeepay":
+                print("")
                 if Nominal_Bayar == Total_Bayar:
-                    print("Terima kasih telah melakukan pembayaran")
+                    print("--------------------------------------------------------------------------------")
+                    print("                    Terima kasih telah melakukan pembayaran                     ")
+                    print("--------------------------------------------------------------------------------")
                     input_valid = True
                 else:
+                    print("")
                     print("Nominal yang anda input tidak sesuai dengan tagihan")
                     print("Tagihan yang harus anda bayar = Rp", Total_Bayar)
                     input_valid = False
             elif Metode_Pembayaran == "Credit Card":
+                print("")
                 if Nominal_Bayar == Total_Bayar:
-                    print("Terima kasih telah melakukan pembayaran")
+                    print("--------------------------------------------------------------------------------")
+                    print("                    Terima kasih telah melakukan pembayaran                     ")
+                    print("--------------------------------------------------------------------------------")
                     input_valid = True
                 else:
+                    print("")
                     print("Nominal yang anda input tidak sesuai dengan tagihan")
                     print("Tagihan yang harus anda bayar = Rp", Total_Bayar)
                     input_valid = False
             elif Metode_Pembayaran == "Debit":
+                print("")
                 if Nominal_Bayar == Total_Bayar:
-                    print("Terima kasih telah melakukan pembayaran")
+                    print("--------------------------------------------------------------------------------")
+                    print("                    Terima kasih telah melakukan pembayaran                     ")
+                    print("--------------------------------------------------------------------------------")
                     input_valid = True
                 else:
+                    print("")
                     print("Nominal yang anda input tidak sesuai dengan tagihan")
                     print("Tagihan yang harus anda bayar = Rp", Total_Bayar)
                     input_valid = False
             else:
+                print("")
                 print("Input tidak valid")
                 print("Mohon melakukan input ulang")
                 return pembayaran()
@@ -204,7 +226,10 @@ def simpan():
         rekap.writerow([namapembeli, nohp, jenis, jumlah, Total_Bayar, Metode_Pembayaran,status])
 simpan()
 
-print("Berikut Struk Transaksi Anda")
+print("")
+print("--------------------------------------------------------------------------------")
+print("                         Berikut Struk Transaksi Anda                           ")
+print("--------------------------------------------------------------------------------")
 #Menampilkan Struk Pembayaran
 screen = Tk()
 screen.title("Konfirmasi Pembayaran")
@@ -231,31 +256,31 @@ acr.place(x=380,y=110)
 nm=Label(screen,text='NAMA PEMBELI', font=("Calibri", 11), background="white")
 nm.place(x=340,y=140)
 
-nmpmb=Label(screen,text='....', font=("Calibri", 11,"bold"), background="white")
+nmpmb=Label(screen,text=namapembeli, font=("Calibri", 12,"bold"), background="white")
 nmpmb.place(x=340,y=170)
 
 tgl=Label(screen,text='TANGGAL', font=("Calibri", 11), background="white")
 tgl.place(x=340,y=200)
 
-tglacr=Label(screen,text='SELASA, 21 AGUSTUS 2017', font=('Calibri', 11, 'bold'), background="white")
+tglacr=Label(screen,text='Selasa, 21 Agustus 2017', font=('Calibri', 12, 'bold'), background="white")
 tglacr.place(x=340,y=230)
 
 wkt=Label(screen,text="WAKTU", font=("Calibri", 11), background="white")
 wkt.place(x=340,y=260)
 
-jam=Label(screen,text='20:00', font=("Calibri", 11, 'bold'), background="white")
+jam=Label(screen,text='20:00', font=("Calibri", 12, 'bold'), background="white")
 jam.place(x=340,y=290)
 
 jns=Label(screen,text='JENIS SEAT', font=("Calibri", 11,), background="white")
 jns.place(x=340,y=320)
 
-jnsseat=Label(screen,text='VVIP', font=("Calibri", 11, "bold"), background="white")
+jnsseat=Label(screen,text=jenis, font=("Calibri", 12, "bold"), background="white")
 jnsseat.place(x=340,y=350)
 
 jmlh=Label(screen,text='JUMLAH', font=("Calibri", 11), background="white")
 jmlh.place(x=340,y=380)
 
-byk=Label(screen,text='3', font=("Calibri", 11, "bold"), background="white")
+byk=Label(screen,text=jumlah, font=("Calibri", 12, "bold"), background="white")
 byk.place(x=340,y=410)
 
 topgrid=Label(screen,text='__________________________________________________________________', background="white")
@@ -263,6 +288,9 @@ topgrid.place(x=335,y=440)
 
 tb=Label(screen,text='Total Bayar', font=('Calibri', 14, 'bold'), background="white")
 tb.place(x=340,y=470)
+
+ttlbyr=Label(screen,text="Rp         %d " %Total_Bayar, font=('Calibri', 15, 'bold'), background="white")
+ttlbyr.place(x=520,y=470)
 
 botgrid=Label(screen,text='__________________________________________________________________', background="white")
 botgrid.place(x=335,y=500)
@@ -279,13 +307,18 @@ screen.mainloop()
 #Konfirmasi Untuk Transaksi Lain
 def transaksi_lain():
     print("")
-    Transaksi_Lagi = input("Apakah anda ingin melakukan transaksi lagi? ")
+    Transaksi_Lagi = input("Apakah anda ingin melakukan transaksi lagi? (Y/N) ")
     if Transaksi_Lagi == "Y":
         return pemesanan()
     elif Transaksi_Lagi == "N":
-        print("Terima kasih telah melakukan transaksi")
+        print("")
+        print("--------------------------------------------------------------------------------")
+        print("                     Terima kasih telah melakukan transaksi                     ")
+        print("--------------------------------------------------------------------------------")
+        print("")
         exit()
-    else:        
+    else:
+        print("")        
         print("Input tidak valid")
         print("Mohon melakukan input ulang")
         return transaksi_lain()
