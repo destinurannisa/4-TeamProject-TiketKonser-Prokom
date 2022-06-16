@@ -1,14 +1,20 @@
+from cgitb import text
 import csv
 from datetime import datetime
 from ctypes import resize
+from functools import total_ordering
+from os import times
 import tkinter
 import tkinter.messagebox
 from tkinter import *
 import tkinter as tk
+from tkinter.tix import TEXT
 from turtle import width
 from PIL import ImageTk, Image
 import pandas as pd
 from tempfile import NamedTemporaryFile
+from fpdf import FPDF
+from datetime import datetime
 
 print("")
 print("--------------------------------------------------------------------------------")
@@ -18,10 +24,12 @@ print("")
 
 # Login pembeli
 def login():
-    global namapembeli, nohp
+    global namapembeli, nohp, time_stamp,timess
     print("================================================================================")
     namapembeli = input("Nama Lengkap = ")
     nohp = input("Nomor HP     = ")
+    time_stamp = datetime.now().strftime("%d/%m/%Y")
+    timess = datetime.now().strftime("%H:%M")
     print("================================================================================")
     with open('data_akun.csv', 'r') as auth:
         reader = csv.reader(auth)
@@ -262,13 +270,13 @@ nmpmb.place(x=340,y=170)
 tgl=Label(screen,text='TANGGAL', font=("Calibri", 11), background="white")
 tgl.place(x=340,y=200)
 
-tglacr=Label(screen,text='Selasa, 21 Agustus 2017', font=('Calibri', 12, 'bold'), background="white")
+tglacr=Label(screen,text=time_stamp, font=('Calibri', 12, 'bold'), background="white")
 tglacr.place(x=340,y=230)
 
 wkt=Label(screen,text="WAKTU", font=("Calibri", 11), background="white")
 wkt.place(x=340,y=260)
 
-jam=Label(screen,text='20:00', font=("Calibri", 12, 'bold'), background="white")
+jam=Label(screen,text=timess, font=("Calibri", 12, 'bold'), background="white")
 jam.place(x=340,y=290)
 
 jns=Label(screen,text='JENIS SEAT', font=("Calibri", 11,), background="white")
@@ -303,6 +311,39 @@ cetak=Button(image=Cetak_button, borderwidth=0, cursor="hand2", bd=0, font=("Cal
 cetak.place(x=430,y=600)
 
 screen.mainloop()
+
+from fpdf import FPDF
+
+class PDF(FPDF):
+    def header(self):
+        # Logo
+        self.image('BEGRON.jpeg', 60, 40, 80)
+        self.image('ariaaaanah.jpg', 135, 30, 50)
+        #font
+        self.set_font('helvetica', 'B', 20)
+        #warna frame, background, font
+        self.set_draw_color(0,80,180)
+      
+        # Arial bold 15
+        self.set_font('helvetica', 'B', 20)
+        # Move to the right
+        # Title
+        self.cell(0, 0, '_________________________________________', border=False, ln=1, align ='C')
+        self.cell(0, 0, 'TIKET KONSER ARIANA GRANDE', border=False, ln=1, align ='C')
+        # Line break
+        self.ln(0)
+
+pdf = PDF('P','mm', (200, 110))
+pdf.alias_nb_pages()
+pdf.add_page()
+pdf.set_font('Arial', 'b', 12)
+pdf.cell(5, 30, ' ', 0, 1)
+pdf.cell(103, 7, 'BUKTI PEMBELIAN', border=True, ln=1)
+pdf.cell(5, 7, ' ', 0, 1)
+pdf.cell(5, 7, 'Tanggal : 16 Agustus 2017', 0, 1)
+pdf.cell(5, 7, 'Waktu : 20.00', 0, 1)
+pdf.cell(5, 7, 'Stage : %s' %jenis, 0, 1)
+pdf.output('tiket_bioskop.pdf', 'F')
 
 #Konfirmasi Untuk Transaksi Lain
 def transaksi_lain():
