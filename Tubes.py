@@ -66,7 +66,7 @@ login()
 def pemesanan():
     print("")
     Pemesanan = input("Apakah anda ingin melakukan pemesanan? (Y/N) ")
-    if Pemesanan == "Y" or "y": 
+    if Pemesanan == "Y": 
         #Menampilkan Gambar Stage
         window = Tk()
         text = Text(window)
@@ -88,7 +88,7 @@ def pemesanan():
         print(updt)
         print("----------------------------")
         print("")
-    elif Pemesanan == "N" or "n":
+    elif Pemesanan == "N":
         print("END")
         exit()
     else:
@@ -99,7 +99,14 @@ def pemesanan():
     def tiket():
         global Total_Bayar, jenis, jumlah
         jenis = input("Jenis tiket yang anda pilih adalah (VVIP, VIP, A, B, C) = ")
-        jumlah = int(input("Jumlah = "))
+        input_valid = False
+        while (input_valid == False):
+            jumlah = input("Jumlah = ")
+            if jumlah.isnumeric() == True:
+                jumlah = int(jumlah)
+                input_valid = True
+            else:
+                input_valid = False
         print("------------------------------------------------------")
         tempfile = NamedTemporaryFile(mode='w', delete=False)
         fields = ['Jenis', 'Harga', 'Kuota']
@@ -110,26 +117,25 @@ def pemesanan():
                 updt = pd.read_csv("tabeltiket.csv")
                 if jenis == "VVIP":
                     Total_Bayar = 5000000 * jumlah
-                    kuota = updt.loc[0, 'Kuota'] - int(jumlah)
+                    kuota = updt.loc[0, 'Kuota'] - jumlah
                     updt.loc[0, 'Kuota'] = kuota
                 elif jenis == "VIP":
                     Total_Bayar = 4000000 * jumlah
-                    kuota = updt.loc[1, 'Kuota'] - int(jumlah)
+                    kuota = updt.loc[1, 'Kuota'] - jumlah
                     updt.loc[1, 'Kuota'] = kuota
                 elif jenis == "A":
                     Total_Bayar = 3000000 * jumlah
-                    kuota = updt.loc[2, 'Kuota'] - int(jumlah)
+                    kuota = updt.loc[2, 'Kuota'] - jumlah
                     updt.loc[2, 'Kuota'] = kuota
                 elif jenis == "B":
                     Total_Bayar = 2500000 * jumlah
-                    kuota = updt.loc[3, 'Kuota'] - int(jumlah)
-                    updt.loc[3, 'Kuota'] = kuota
+                    kuota = updt.loc[3, 'Kuota'] - jumlah
                 elif jenis == "C":
                     Total_Bayar = 2000000 * jumlah
-                    kuota = updt.loc[4, 'Kuota'] - int(jumlah)
+                    kuota = updt.loc[4, 'Kuota'] - jumlah
                     updt.loc[4, 'Kuota'] = kuota
                 else:
-                    print("Input tidak valid")
+                    print("Input jenis tiket tidak valid")
                     print("Mohon melakukan input ulang")
                     return tiket()
             updt.to_csv("tabeltiket.csv", index=False)
@@ -139,26 +145,37 @@ def pemesanan():
             print("------------------------------------------------------")
         #Pemilihan Metode Pembayaran
         def pembayaran():
-            global Metode_Pembayaran,status
+            global Metode_Pembayaran, status
             print("")
             print("Anda dapat membayar dengan metode (Tunai / OVO / Gopay / Shopeepay / Credit Card / Debit)")
             Metode_Pembayaran = input("Metode pembayaran apa yang akan anda gunakan? ")
             if Metode_Pembayaran == "Tunai":
                 print("")
                 print("------------------------------------------------------")
-                Uang_Pembayaran = int(input("Nominal yang anda keluarkan adalah : Rp "))
-                Kembalian = (Uang_Pembayaran - Total_Bayar)
-                print("Jumlah kembalian adalah Rp", Kembalian)
-                print("------------------------------------------------------")
-                print("")
-                print("Terimakasih telah melakukan pembayaran")
+                input_valid = False
+                while (input_valid == False):
+                    Uang_Pembayaran = input("Nominal yang anda keluarkan adalah : Rp ")
+                    if Uang_Pembayaran.isnumeric() == True:
+                        Uang_Pembayaran = int(Uang_Pembayaran)
+                        Kembalian = (Uang_Pembayaran - Total_Bayar)
+                        print("Jumlah kembalian adalah Rp", Kembalian)
+                        print("------------------------------------------------------")
+                        print("")
+                        print("Terimakasih telah melakukan pembayaran")
+                        input_valid = True
+                    else:
+                        input_valid = False
             else:
                 input_valid = False
                 while (input_valid == False):
-                    print("")
-                    print("--------------------------------------------------------------------------------")
-                    Nominal_Bayar = int(input("Nominal yang anda bayarkan adalah : Rp "))
-                    print("--------------------------------------------------------------------------------")
+                    input_valid = False
+                    while (input_valid == False):
+                        Nominal_Bayar = input("Nominal yang anda bayarkan adalah : Rp ")
+                        if Nominal_Bayar.isnumeric() == True:
+                            Nominal_Bayar = int(Nominal_Bayar)
+                            input_valid = True
+                        else: 
+                            input_valid = False
                     if Metode_Pembayaran == "OVO":
                         print("")
                         if Nominal_Bayar == Total_Bayar:
@@ -168,7 +185,7 @@ def pemesanan():
                             print("--------------------------------------------------------------------------------")
                             input_valid = True
                         else:
-                            print("")
+                            print("---------------------------------------------------")
                             print("Nominal yang anda input tidak sesuai dengan tagihan")
                             print("Tagihan yang harus anda bayar = Rp", Total_Bayar)
                             input_valid = False
@@ -180,7 +197,7 @@ def pemesanan():
                             print("--------------------------------------------------------------------------------")
                             input_valid = True
                         else:
-                            print("")
+                            print("---------------------------------------------------")
                             print("Nominal yang anda input tidak sesuai dengan tagihan")
                             print("Tagihan yang harus anda bayar = Rp ", Total_Bayar)
                             input_valid = False
@@ -192,7 +209,7 @@ def pemesanan():
                             print("--------------------------------------------------------------------------------")
                             input_valid = True
                         else:
-                            print("")
+                            print("---------------------------------------------------")
                             print("Nominal yang anda input tidak sesuai dengan tagihan")
                             print("Tagihan yang harus anda bayar = Rp", Total_Bayar)
                             input_valid = False
@@ -204,7 +221,7 @@ def pemesanan():
                             print("--------------------------------------------------------------------------------")
                             input_valid = True
                         else:
-                            print("")
+                            print("---------------------------------------------------")
                             print("Nominal yang anda input tidak sesuai dengan tagihan")
                             print("Tagihan yang harus anda bayar = Rp", Total_Bayar)
                             input_valid = False
@@ -216,7 +233,7 @@ def pemesanan():
                             print("--------------------------------------------------------------------------------")
                             input_valid = True
                         else:
-                            print("")
+                            print("---------------------------------------------------")
                             print("Nominal yang anda input tidak sesuai dengan tagihan")
                             print("Tagihan yang harus anda bayar = Rp", Total_Bayar)
                             input_valid = False
@@ -225,7 +242,7 @@ def pemesanan():
                         print("Input tidak valid")
                         print("Mohon melakukan input ulang")
                         return pembayaran()
-                status = "Berhasil"
+            status = "Berhasil"
             #Menyimpan rekapan transaksi pada CSV
             def simpan():
                 with open('rekap_transaksi.csv', 'a') as csvfile:
@@ -254,7 +271,7 @@ def pemesanan():
                     jdl=Label(screen,text='Detail Tranksaksi Tiket', font=("Calibri", 18, "bold"), background="white")
                     jdl.place(x=380,y=60)
 
-                    tpgrid=Label(screen,text='__________________________________________________________________', background="white")
+                    tpgrid=Label(screen,text='______________________', background="white")
                     tpgrid.place(x=335,y=90)
 
                     acr=Label(screen,text="ARIANA GRANDE MUSIC CONCERT", font=('Calibri', 12, 'bold'), background="white")
@@ -290,26 +307,24 @@ def pemesanan():
                     byk=Label(screen,text=jumlah, font=("Calibri", 12, "bold"), background="white")
                     byk.place(x=340,y=410)
 
-                    topgrid=Label(screen,text='__________________________________________________________________', background="white")
+                    topgrid=Label(screen,text='______________________', background="white")
                     topgrid.place(x=335,y=440)
 
                     tb=Label(screen,text='Total Bayar', font=('Calibri', 14, 'bold'), background="white")
                     tb.place(x=340,y=470)
 
                     ttlbyr=Label(screen,text="Rp         %d " %Total_Bayar, font=('Calibri', 15, 'bold'), background="white")
-                    ttlbyr.place(x=510,y=470)
+                    ttlbyr.place(x=520,y=470)
 
-                    botgrid=Label(screen,text='__________________________________________________________________', background="white")
+                    botgrid=Label(screen,text='______________________', background="white")
                     botgrid.place(x=335,y=500)
 
                     snk=Label(screen,text='* Pemesanan Tidak Dapat Dikembalikan Jika Sudah Melakukan Transaksi', font=('Calibri', 7), background="white", fg='red')
                     snk.place(x=340,y=530)
 
                     Cetak_button=PhotoImage(file="cetakbutton.png")
-                    cetak=Button(image=Cetak_button, borderwidth=0, cursor="hand2", command=lambda:destroyscreen(), bd=0, font=("Calibri"), background="white")
+                    cetak=Button(image=Cetak_button, borderwidth=0, cursor="hand2", bd=0, font=("Calibri"), background="white")
                     cetak.place(x=430,y=600)
-                    def destroyscreen():
-                         screen.destroy()
 
                     screen.mainloop()
 
@@ -323,10 +338,11 @@ def pemesanan():
                             #warna frame, background, font
                             self.set_draw_color(0,80,180)
                                 
-                            # Helvetica bold 15
+                            # Arial bold 15
                             self.set_font('helvetica', 'B', 20)
+                            # Move to the right
                             # Title
-                            self.cell(0, 0, '____________________________________', border=False, ln=1, align ='C')
+                            self.cell(0, 0, '_______________', border=False, ln=1, align ='C')
                             self.cell(0, 0, 'TIKET KONSER ARIANA GRANDE', border=False, ln=1, align ='C')
                             # Line break
                             self.ln(0)
@@ -340,12 +356,8 @@ def pemesanan():
                     pdf.cell(5, 7, ' ', 0, 1)
                     pdf.cell(5, 7, 'Tanggal : 21 Agustus 2017', 0, 1)
                     pdf.cell(5, 7, 'Waktu : 20.00', 0, 1)
-                    pdf.cell(5, 7, 'Seat : %s' %jenis, 0, 1)
-                    pdf.cell(5, 7, 'Jumlah Tiket : %s' %jumlah, 0, 1)
-                    pdf.output('tiket_%s.pdf'%notrans, 'F')
-
-
-
+                    pdf.cell(5, 7, 'Stage : %s' %jenis, 0, 1)
+                    pdf.output('tiket_konser.pdf', 'F')
                 #Konfirmasi Untuk Transaksi Lain
                 def transaksi_lain():
                     print("")
