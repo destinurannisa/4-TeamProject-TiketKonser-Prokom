@@ -153,7 +153,10 @@ def pemesanan():
             else:
                 input_valid = False
                 while (input_valid == False):
+                    print("")
+                    print("--------------------------------------------------------------------------------")
                     Nominal_Bayar = int(input("Nominal yang anda bayarkan adalah : Rp "))
+                    print("--------------------------------------------------------------------------------")
                     if Metode_Pembayaran == "OVO":
                         print("")
                         if Nominal_Bayar == Total_Bayar:
@@ -249,7 +252,7 @@ def pemesanan():
                     jdl=Label(screen,text='Detail Tranksaksi Tiket', font=("Calibri", 18, "bold"), background="white")
                     jdl.place(x=380,y=60)
 
-                    tpgrid=Label(screen,text='______________________', background="white")
+                    tpgrid=Label(screen,text='__________________________________________________________________', background="white")
                     tpgrid.place(x=335,y=90)
 
                     acr=Label(screen,text="ARIANA GRANDE MUSIC CONCERT", font=('Calibri', 12, 'bold'), background="white")
@@ -285,24 +288,26 @@ def pemesanan():
                     byk=Label(screen,text=jumlah, font=("Calibri", 12, "bold"), background="white")
                     byk.place(x=340,y=410)
 
-                    topgrid=Label(screen,text='______________________', background="white")
+                    topgrid=Label(screen,text='__________________________________________________________________', background="white")
                     topgrid.place(x=335,y=440)
 
                     tb=Label(screen,text='Total Bayar', font=('Calibri', 14, 'bold'), background="white")
                     tb.place(x=340,y=470)
 
                     ttlbyr=Label(screen,text="Rp         %d " %Total_Bayar, font=('Calibri', 15, 'bold'), background="white")
-                    ttlbyr.place(x=520,y=470)
+                    ttlbyr.place(x=510,y=470)
 
-                    botgrid=Label(screen,text='______________________', background="white")
+                    botgrid=Label(screen,text='__________________________________________________________________', background="white")
                     botgrid.place(x=335,y=500)
 
                     snk=Label(screen,text='* Pemesanan Tidak Dapat Dikembalikan Jika Sudah Melakukan Transaksi', font=('Calibri', 7), background="white", fg='red')
                     snk.place(x=340,y=530)
 
                     Cetak_button=PhotoImage(file="cetakbutton.png")
-                    cetak=Button(image=Cetak_button, borderwidth=0, cursor="hand2", bd=0, font=("Calibri"), background="white")
+                    cetak=Button(image=Cetak_button, borderwidth=0, cursor="hand2", command=lambda:destroyscreen(), bd=0, font=("Calibri"), background="white")
                     cetak.place(x=430,y=600)
+                    def destroyscreen():
+                         screen.destroy()
 
                     screen.mainloop()
 
@@ -316,9 +321,8 @@ def pemesanan():
                             #warna frame, background, font
                             self.set_draw_color(0,80,180)
                                 
-                            # Arial bold 15
+                            # Helvetica bold 15
                             self.set_font('helvetica', 'B', 20)
-                            # Move to the right
                             # Title
                             self.cell(0, 0, '_______________', border=False, ln=1, align ='C')
                             self.cell(0, 0, 'TIKET KONSER ARIANA GRANDE', border=False, ln=1, align ='C')
@@ -336,6 +340,9 @@ def pemesanan():
                     pdf.cell(5, 7, 'Waktu : 20.00', 0, 1)
                     pdf.cell(5, 7, 'Stage : %s' %jenis, 0, 1)
                     pdf.output('tiket_konser.pdf', 'F')
+
+
+
                 #Konfirmasi Untuk Transaksi Lain
                 def transaksi_lain():
                     print("")
