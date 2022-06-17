@@ -10,12 +10,13 @@ from tkinter import *
 import tkinter as tk
 from tkinter.tix import TEXT
 from turtle import width
+from typing import Literal
 from PIL import ImageTk, Image
 import pandas as pd
 from tempfile import NamedTemporaryFile
 from fpdf import FPDF
 from datetime import datetime
-
+import random
 print("")
 print("--------------------------------------------------------------------------------")
 print("          Selamat Datang di Pemesanan Tiket Konser Musik Ariana Grande          ")
@@ -24,12 +25,13 @@ print("")
 
 # Login pembeli
 def login():
-    global namapembeli, nohp, time_stamp,timess
+    global namapembeli, nohp, time_stamp,timess, notrans
     print("================================================================================")
     namapembeli = input("Nama Lengkap = ")
     nohp = input("Nomor HP     = ")
     time_stamp = datetime.now().strftime("%d/%m/%Y")
     timess = datetime.now().strftime("%H:%M")
+    notrans = str(random.random())
     print("================================================================================")
     with open('data_akun.csv', 'r') as auth:
         reader = csv.reader(auth)
@@ -324,7 +326,7 @@ def pemesanan():
                             # Helvetica bold 15
                             self.set_font('helvetica', 'B', 20)
                             # Title
-                            self.cell(0, 0, '_______________', border=False, ln=1, align ='C')
+                            self.cell(0, 0, '____________________________________', border=False, ln=1, align ='C')
                             self.cell(0, 0, 'TIKET KONSER ARIANA GRANDE', border=False, ln=1, align ='C')
                             # Line break
                             self.ln(0)
@@ -338,8 +340,9 @@ def pemesanan():
                     pdf.cell(5, 7, ' ', 0, 1)
                     pdf.cell(5, 7, 'Tanggal : 21 Agustus 2017', 0, 1)
                     pdf.cell(5, 7, 'Waktu : 20.00', 0, 1)
-                    pdf.cell(5, 7, 'Stage : %s' %jenis, 0, 1)
-                    pdf.output('tiket_konser.pdf', 'F')
+                    pdf.cell(5, 7, 'Seat : %s' %jenis, 0, 1)
+                    pdf.cell(5, 7, 'Jumlah Tiket : %s' %jumlah, 0, 1)
+                    pdf.output('tiket_%s.pdf'%notrans, 'F')
 
 
 
