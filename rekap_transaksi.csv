@@ -1,51 +1,5 @@
-Nama Pembeli,No HP,Jenis Tiket,Jumlah,Total Bayar,Metode Pembayaran,Status
-Baymax,00,VIP,3,12000000,OVO,Berhasil
+Tanggal,Waktu,No Transaksi,Nama Pembeli,No HP,Jenis Tiket,Jumlah,Total Bayar,Metode Pembayaran,Status
+17/06/2022,20:57,0.4743131414133064,Asa Mutiara,0875,VVIP,2,10000000,Tunai,Berhasil
+17/06/2022,20:57,0.2406648805677104,Asa Mutiara,0875,A,2,6000000,ovo,Berhasil
+17/06/2022,21:07,0.22007047232540433,Tayo,0999,b,1,2500000,tunai,Berhasil
 
-btara,123,A,1,3000000,OVO,Berhasil
-
-btara,123,A,1,3000000,OVO,Berhasil
-
-btara,123,A,1,3000000,OVO,Berhasil
-
-Btara Aryanda,123,A,1,3000000,Gopay,Berhasil
-
-Btara Aryanda,123,A,3,9000000,OVO,Berhasil
-
-Btara,123,A,1,3000000,OVO,Berhasil
-
-Btara Aryanda,123,A,2,6000000,OVO,Berhasil
-
-Btara Aryanda,123,A,3,9000000,OVO,Berhasil
-
-Btara Aryanda,123,VVIP,3,15000000,OVO,Berhasil
-
-Btara Aryanda,123,VVIP,3,15000000,OVO,Berhasil
-
-Btara Aryanda,123,VVIP,4,20000000,OVO,Berhasil
-
-Btara Aryanda,123,VVIP,4,20000000,OVO,Berhasil
-
-Btara,123,VVIP,4,20000000,OVO,Berhasil
-
-Btara Aryanda,123,VVIP,3,15000000,Gopay,Berhasil
-Btara Aryanda,123,VVIP,4,20000000,Gopay,Berhasil
-andre,1991,B,1,2500000,OVO,Berhasil
-FIRMANSYAH,1990,B,1,2500000,OVO,Berhasil
-FAY,1111,A,1,3000000,OVO,Berhasil
-ANDRE,121212,A,1,3000000,OVO,Berhasil
-HEH,1,B,1,2500000,OVO,Berhasil
-Y,1,C,1,2000000,OVO,Berhasil
-HAH,1010,C,1,2000000,OVO,Berhasil
-F,1,A,1,3000000,OVO,Berhasil
-R,2,A,1,3000000,OVO,Berhasil
-W,2,B,1,2500000,OVO,Berhasil
-Andre,1234,A,2,6000000,OVO,Berhasil
-HEI,123,B,2,5000000,OVO,Berhasil
-apa,111,C,3,6000000,OVO,Berhasil
-HEi,123,B,1,2500000,OVO,Berhasil
-Hei,12,A,1,3000000,OVO,Berhasil
-HEI,123,A,1,3000000,OVO,Berhasil
-Yes,122,A,1,3000000,OVO,Berhasil
-desti,123,A,1,3000000,OVO,Berhasil
-desti,123,A,1,3000000,Tunai,Berhasil
-desti,123,A,1,3000000,Tunai,Berhasil
